@@ -17,7 +17,7 @@ class CreateTasksTable extends Migration
             $table->bigIncrements('id');
             $table->text('body');
             $table->string('status')->default('todo');
-            $table->timestamp('ended_at');
+            $table->timestamp('ended_at')->nullable();
             $table->timestamps();
         });
     }

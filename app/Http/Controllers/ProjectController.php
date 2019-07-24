@@ -46,7 +46,7 @@ class ProjectController extends Controller
             'user_id' => Auth::user()->id,
             'created_at' =>  Carbon::now()
         ]);
-        return back();
+        return view('projects.index')->with(['projects'=> Project::all()]);
     }
 
     /**
@@ -86,7 +86,7 @@ class ProjectController extends Controller
         $update = $project->update([
             'name' => $request->name
         ]);
-        return back();
+        return view('projects.index')->with('projects',Project::all());
     }
 
     /**

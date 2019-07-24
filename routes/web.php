@@ -27,14 +27,10 @@ Route::get('/delete_project/{id}', 'ProjectController@destroy')->name('delete_pr
 
 
 Route::get('/tasks', 'TaskController@index')->name('tasks');
-Route::get('/task/{id}', 'TaskController@show')->name('task');
+Route::post('/tasks', 'TaskController@store');
+Route::any('/task/{id}', 'TaskController@show')->name('task');
 Route::get('/edit_task/{id}', 'TaskController@edit')->name('edit_task');
 Route::get('/delete_task/{id}', 'TaskController@destroy')->name('delete_task');
 Route::post('/task_update', 'TaskController@update')->name('task_update');
-
-
-//
-//Route::post('/projects/update',function (){
-//    dd('jjjjjj');
-//});
-
+Route::get('/mark_task/{id}', 'TaskController@markAs')->name('mark_task');
+Route::get('/task_create', 'TaskController@create')->name('task_create');

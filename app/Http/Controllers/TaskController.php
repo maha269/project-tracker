@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Project;
 use App\Task;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
@@ -26,7 +28,8 @@ class TaskController extends Controller
      */
     public function create()
     {
-        return view('projects.create');
+        $projects = Project::all();
+        return view('tasks.create')->with(['projects'=>$projects]);
     }
 
     /**
@@ -40,12 +43,12 @@ class TaskController extends Controller
         if(!Auth::check()){
             return redirect('/login');
         }
-        Project::create([
-            'name' => $request->name,
-            'user_id' => Auth::user()->id,
+        $store = Task::create([
+            'body' => $request->body,
+            'project_id' => $request->project_id,
             'created_at' =>  Carbon::now()
         ]);
-        return back();
+        return view('tasks.index')->with(['tasks'=> Task::all()]);
     }
 
     /**
@@ -57,7 +60,7 @@ class TaskController extends Controller
     public function show(Request $request)
     {
         $project = Project::find($request->id);
-        return view ('tasks.index')->with(["tasks"=> $project->tasks()]);
+        return view ('tasks.index')->with(["tasks"=> $project->tasks]);
     }
 
     /**
@@ -85,7 +88,9 @@ class TaskController extends Controller
         $update = $task->update([
             'body' => $request->body
         ]);
-        return back();
+        if($update){
+            return view('tasks.index')->with(['tasks'=>Task::all()]);
+        }
     }
 
     /**
@@ -94,8 +99,21 @@ class TaskController extends Controller
      * @param  \App\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Project $project)
+    public function destroy(Request $request)
     {
-        //
+
+        Task::where('id',$request->id)->delete();
+        return back();
+
+    }
+
+    public function markAs(Request $request)
+    {
+        $update = Task::where('id',$request->id)->update([
+            'status'=> $request->status
+        ]);
+        if($update){
+            return back();
+        }
     }
 }

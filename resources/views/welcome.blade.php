@@ -88,6 +88,7 @@
                     <a href="{{route('projects')}}">View Projects</a>
                     <a href="{{route('tasks')}}">View Tasks</a>
                     <a href="{{route('projects/create')}}">Create Project</a>
+                    <a href="{{route('task_create')}}">Create Task</a>
 
                 </div>
             </div>
